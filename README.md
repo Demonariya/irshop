@@ -53,7 +53,7 @@ npx @agent-native/skills add demonariya/irshop
 
 ```
 /irshop Samsung Galaxy A56
-/irshop کیبورد مکانیکی
+/irshop کیبورد مکانیکال
 /irshop PlayStation 5
 ```
 
