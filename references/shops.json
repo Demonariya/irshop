@@ -1,0 +1,122 @@
+{
+  "shops": [
+    {
+      "id": "torob",
+      "name": "ترب",
+      "url": "https://torob.com",
+      "search_pattern": "https://torob.com/search/?query={query}",
+      "type": "aggregator",
+      "category": "all",
+      "enabled": true,
+      "priority": 1,
+      "features": ["price_comparison", "price_history", "coupons"]
+    },
+    {
+      "id": "digikala",
+      "name": "دیجی‌کالا",
+      "url": "https://www.digikala.com",
+      "search_pattern": "https://www.digikala.com/search/?q={query}",
+      "type": "marketplace",
+      "category": "all",
+      "enabled": true,
+      "priority": 2,
+      "features": ["fast_shipping", "reviews", "installments", "official_warranty"]
+    },
+    {
+      "id": "bashgah",
+      "name": "باسلام",
+      "url": "https://www.bashgah.com",
+      "search_pattern": "https://www.bashgah.com/search?q={query}",
+      "type": "social_marketplace",
+      "category": "all",
+      "enabled": true,
+      "priority": 3,
+      "features": ["free_shipping", "local_sellers", "handmade"]
+    },
+    {
+      "id": "emalls",
+      "name": "ایمالز",
+      "url": "https://www.emalls.ir",
+      "search_pattern": "https://www.emalls.ir/search?q={query}",
+      "type": "aggregator",
+      "category": "all",
+      "enabled": true,
+      "priority": 4,
+      "features": ["price_comparison"]
+    },
+    {
+      "id": "elecmake",
+      "name": "الکترومیک",
+      "url": "https://elecmake.ir",
+      "search_pattern": "https://elecmake.ir/search?q={query}",
+      "type": "specialty",
+      "category": "electronics",
+      "enabled": true,
+      "priority": 5,
+      "features": ["components", "modules", "diy"]
+    },
+    {
+      "id": "arvidtech",
+      "name": "آرویدتک",
+      "url": "https://arvidtech.com",
+      "search_pattern": "https://arvidtech.com/?s={query}",
+      "type": "specialty",
+      "category": "electronics",
+      "enabled": true,
+      "priority": 6,
+      "features": ["components", "microcontrollers", "sensors"]
+    },
+    {
+      "id": "micromike",
+      "name": "میکرومیک",
+      "url": "https://micromike.ir",
+      "search_pattern": "https://micromike.ir/?s={query}",
+      "type": "specialty",
+      "category": "electronics",
+      "enabled": true,
+      "priority": 7,
+      "features": ["components", "modules", "development_boards"]
+    },
+    {
+      "id": "caferobot",
+      "name": "کافه ربات",
+      "url": "https://caferobot.com",
+      "search_pattern": "https://caferobot.com/?s={query}",
+      "type": "specialty",
+      "category": "robotics",
+      "enabled": true,
+      "priority": 8,
+      "features": ["robotics", "education", "kits"]
+    },
+    {
+      "id": "utmel",
+      "name": "اتمل",
+      "url": "https://utmel.com",
+      "search_pattern": "https://utmel.com/search?q={query}",
+      "type": "specialty",
+      "category": "electronics",
+      "enabled": true,
+      "priority": 9,
+      "features": ["components", "semiconductors"]
+    }
+  ],
+  "categories": {
+    "all": "همه",
+    "electronics": "الکترونیک",
+    "robotics": "رباتیک",
+    "fashion": "پوشاک",
+    "home": "لوازم خانگی",
+    "mobile": "موبایل",
+    "laptop": "لپ‌تاپ",
+    "gaming": "گیمینگ"
+  },
+  "settings": {
+    "default_sort": "price_asc",
+    "default_currency": "IRR",
+    "show_unavailable": false,
+    "max_results_per_shop": 10,
+    "enable_images": true,
+    "enable_cache": true,
+    "cache_ttl": 3600
+  }
+}

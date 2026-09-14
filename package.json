@@ -1,0 +1,47 @@
+{
+  "name": "irshop",
+  "version": "1.0.0",
+  "description": "جستجو و مقایسه محصولات در فروشگاه‌های اینترنتی ایران",
+  "main": "SKILL.md",
+  "scripts": {
+    "test": "echo \"No tests yet\"",
+    "lint": "echo \"No linting configured\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/demonariya/irshop.git"
+  },
+  "keywords": [
+    "claude-code",
+    "skill",
+    "shopping",
+    "iran",
+    "price-comparison",
+    "digikala",
+    "torob",
+    "ecommerce",
+    "retail",
+    "api"
+  ],
+  "author": "demonariya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/demonariya/irshop/issues"
+  },
+  "homepage": "https://github.com/demonariya/irshop#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    "references/",
+    "examples/"
+  ],
+  "categories": [
+    "AI",
+    "Shopping",
+    "Utilities"
+  ]
+}
