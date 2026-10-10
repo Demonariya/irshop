@@ -1,9 +1,9 @@
 ---
 name: irshop
-description: "Search and compare current product prices on Iranian shopping sites. Use for Persian or English product searches that need verified product names, variant details, Toman prices, availability, seller names, direct links, deduplication, and a ranked Markdown comparison table."
+description: "Search and compare current product prices on Iranian shopping sites, and check the seller's Enamad trust badge. Use for Persian or English product searches requiring verified variants, Toman prices, stock status, seller links, cautious Enamad verification, deduplication, and a ranked Markdown comparison table."
 license: MIT
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   author: "Demonariya"
   tags: "shopping, iran, price-comparison, persian, ecommerce"
 ---
@@ -73,6 +73,27 @@ Use this extraction order:
 - **eMalls:** treat the result as an aggregator. Identify whether a price belongs to a specific shop, then follow the offer to the merchant when possible. Keep a result labeled as eMalls if no direct merchant offer can be verified.
 - **Specialist shops:** first inspect the page for JSON-LD Product/Offer. Some shops may use WooCommerce-like markup (li.product, a.woocommerce-LoopProduct-link, .price, .stock), but only use these hints after confirming they exist on that site's live DOM. Find the title, price, availability, and link within the same product card; verify candidates on their detail page.
 
+### Enamad verification for seller offers
+
+Before labeling an offer's seller status, inspect the seller's own domain and look for a clickable Enamad badge in its footer, About, or Contact page.
+
+1. Open the actual seller homepage and find the badge anchor, not just an image or text claiming «دارای اینماد».
+2. Follow the badge link only if the destination hostname is trustseal.enamad.ir or enamad.ir, or a subdomain of those official hosts. Do not treat lookalike hosts or a seller-hosted page as official verification.
+3. On the official page, compare the registered hostname to the exact seller hostname. Read the displayed validity/expiry status. A matching domain with no readable validity status is not confirmed active.
+4. Use these labels consistently:
+   - «تأیید رسمی»: official page reached, exact domain matches, and current validity is explicitly confirmed.
+   - «منقضی»: the official page explicitly says the symbol is expired.
+   - «عدم تطبیق دامنه»: the official page identifies a different domain.
+   - «لینک اینماد دیده شد؛ اعتبار نامشخص»: clickable badge found, but official verification cannot be reached or its validity is not readable.
+   - «بررسی‌نشده»: no check was completed. Do not translate this to “بدون اینماد”.
+   - «نشان در صفحه قابل مشاهده نبود»: no official link found in fetched HTML. On client-rendered sites, inspect the rendered page before concluding.
+5. If the official site is blocked, times out, returns 403/429, or produces a tunnel/network error, do not bypass controls. Mark the status unknown and continue with another source.
+6. For Torob and eMalls, check the individual merchant when an offer links to an external store. An aggregator's Enamad badge is not evidence about the merchant selling the item.
+7. A current Enamad match is only one trust signal. Do not describe a shop as safe, authentic, or guaranteed solely because it has a symbol.
+8. When Python and repository files are available, run python scripts/check_enamad.py --limit 12 --update-registry for a limited polite check, or python scripts/check_enamad.py --all --update-registry for the whole registry. The helper never marks a symbol active automatically; manually inspect any official page that requires interpretation. Skip sites whose crawl permissions are unclear or that block access.
+
+Current registry note: on 2026-10-10, clickable official Enamad links were found on Digikala, Technolife, Torob, eMalls, Basalam, and Kalatik, but the official verification host failed with ERR_TUNNEL_CONNECTION_FAILED. Therefore none of these six is marked officially active; the registered-domain match and expiration are unknown. The other registry entries are marked بررسی‌نشده until checked.
+
 ### 4. Normalize prices and availability
 
 1. Preserve the original price text until parsing is complete. Convert Persian digits (۰۱۲۳۴۵۶۷۸۹) and Arabic-Indic digits (٠١٢٣٤٥٦٧٨٩) to Western digits for calculation.
@@ -106,14 +127,14 @@ Return no more than **10 distinct offers**, sorted by normalized Toman price asc
 
 Use exactly these columns, in this order:
 
-| # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | لینک مستقیم |
-|---:|---|---:|---|---|---|
+| # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
+|---:|---|---:|---|---|---|---|
 
 Formatting rules:
 
 - Format full prices with Persian digits and the Persian thousands separator, for example ۹۶٬۵۰۰٬۰۰۰ تومان. Do not use shortened forms such as ۹۶.۵M.
 - If price is not reliably comparable, display نامشخص rather than inventing or estimating it.
-- Use status labels موجود, ناموجود, and نامشخص. The main comparison table should normally omit ناموجود offers; mention excluded out-of-stock matches in the note below if useful.
+- Use stock labels موجود, ناموجود, and نامشخص. Use the distinct Enamad labels from the verification section; do not map بررسی‌نشده to a claim that the shop lacks Enamad. The main table should normally omit ناموجود offers.
 - Use a real Markdown link such as [مشاهده محصول](https://...). Never output a placeholder such as [link] or link a shop home page as though it were a product page.
 - Link to the merchant's product page when verified. Otherwise link to the exact aggregator listing and make the source clear in the seller/source cell.
 - Do not add image columns unless a real product image URL was successfully extracted and images materially help the request.
@@ -126,6 +147,7 @@ After the table, add a **خلاصه** section with:
 - **ارزان‌ترین گزینه:** seller, price, and direct link; only if at least one comparable in-stock offer exists.
 - **میانگین قیمت:** calculate only from verified, in-stock offers for the same exact variant with comparable Toman prices. Do not mix capacities, models, bundles, conditions, or ambiguous currencies.
 - **بازه قیمت:** lowest to highest comparable in-stock price when at least two exist.
+- **وضعیت اینماد:** distinguish officially verified active sellers from badge links whose validity could not be checked and from untested sellers.
 - **محدودیت‌ها:** briefly state blocked/unreachable sites, unknown stock, excluded variants, or omitted shipping/conditional discounts.
 - **زمان بررسی:** include the real check time only when available from the runtime; never invent a timestamp.
 
@@ -136,7 +158,8 @@ The summary should be short. If there is only one valid offer, report the cheape
 - Use live evidence, not invented prices, sellers, stock states, review counts, coupons, or delivery dates.
 - Treat current rendered content as primary evidence and structured data as a cross-check.
 - Search Torob first; use other shops to extend coverage or verify merchant-level availability.
-- Use references/shops.json for site-specific entry points and extraction hints, but validate the live site every time.
+- Use references/shops.json for site-specific entry points, extraction hints, and timestamped Enamad observations, but validate the live site every time.
+- Verify Enamad on the seller's own domain, never from a logo alone; aggregator status does not verify external merchants.
 - Keep products and variants separate. Compare only prices expressed in the same currency/unit.
 - Show the source link for every row and disclose partial coverage.
 - Respect rate limits, robots directives, terms of service, login walls, CAPTCHA, and anti-bot restrictions. Never try to circumvent access controls.
@@ -157,7 +180,7 @@ The summary should be short. If there is only one valid offer, report the cheape
 
 | # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | لینک مستقیم |
 |---:|---|---:|---|---|---|
-| 1 | نام و مدل دقیق | ۹۶٬۵۰۰٬۰۰۰ تومان | فروشنده‌ای که در صفحه دیده شد | موجود | [مشاهده محصول](https://example.com/product) |
+| 1 | نام و مدل دقیق | ۹۶٬۵۰۰٬۰۰۰ تومان | فروشنده‌ای که در صفحه دیده شد | موجود | بررسی‌نشده | [مشاهده محصول](https://example.com/product) |
 
 ### خلاصه
 - نتایج قابل مقایسه: ۱ پیشنهاد از منابعی که واقعاً بررسی شدند.
@@ -182,5 +205,6 @@ The row above is a formatting example only, not a real offer. Never reuse its pr
 
 - **references/shops.json** — search entry points, shop types, selector hints, and extraction notes.
 - **scripts/parse_price.py** — standard-library helper for Persian/Arabic numeral, currency, and stock-text normalization.
+- **scripts/check_enamad.py** — polite badge-link discovery and domain cross-check helper; it does not auto-assert that a symbol is active.
 - **examples/basic-usage.md** — sample request and output structure; examples are not live market data.
 - Agent Skills format: https://agentskills.io/specification
