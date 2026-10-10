@@ -104,7 +104,7 @@
         "availability": "Use an explicit stock message or active purchase control belonging to the exact offer."
       },
       "extraction_notes": [
-        "Correct domain is basalam.com; do not use bashgah.com.",
+        "Use basalam.com as the site host and follow only product links found on the current page.",
         "If the saved search URL no longer works, use the site's visible search field and record the resulting product URL.",
         "Record the seller/booth name only if it is visible on the page.",
         "Do not infer shipping cost, delivery time, or free shipping."
