@@ -1,6 +1,6 @@
 {
   "name": "irshop",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "جستجو و مقایسه قیمت محصولات در فروشگاه‌های اینترنتی ایران",
   "main": "SKILL.md",
   "scripts": {
