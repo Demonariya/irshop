@@ -1,122 +1,325 @@
 {
+  "schema_version": 1,
+  "purpose": "Search entry points and extraction guidance for the irshop agent. URL templates and selector hints are starting points, not a guarantee that a site currently exposes that route or markup.",
+  "query_rules": {
+    "encoding": "Percent-encode the complete query value as UTF-8 before substituting {query}. If the template fails, use the visible search form on the site's home page.",
+    "evidence_priority": [
+      "Rendered product/offer page and visible selected variant",
+      "Product or Offer JSON-LD validated against the rendered page",
+      "Rendered search-result card with product-specific price and URL",
+      "Search snippet only for discovery; not enough to assert stock or final price"
+    ],
+    "generic_extraction": {
+      "product_jsonld": "Inspect script[type='application/ld+json'] for Product, Offer, or AggregateOffer. Read name, sku, offers.price, offers.priceCurrency, offers.availability, offers.seller, and offers.url when present.",
+      "card_association": "Find the product anchor first. Extract the price and stock text from the same card/container, not from a nearby promotional banner or unrelated product.",
+      "price": "Prefer current selling price. Ignore crossed-out prices, installments, deposits, delivery charges, and conditional coupon totals.",
+      "stock": "Only mark in_stock or out_of_stock when explicit page evidence exists. Otherwise use unknown.",
+      "selectors_warning": "Do not treat any selector hint as verified or stable. Inspect the live DOM on every site visit and prefer semantic attributes and structured data."
+    }
+  },
   "shops": [
     {
       "id": "torob",
       "name": "ترب",
-      "url": "https://torob.com",
-      "search_pattern": "https://torob.com/search/?query={query}",
+      "base_url": "https://torob.com",
+      "search_url_template": "https://torob.com/search/?query={query}",
       "type": "aggregator",
-      "category": "all",
+      "categories": [
+        "general",
+        "electronics",
+        "mobile",
+        "laptop",
+        "home",
+        "gaming"
+      ],
       "enabled": true,
       "priority": 1,
-      "features": ["price_comparison", "price_history", "coupons"]
+      "selector_hints": {
+        "product_links": [
+          "a[href*='/p/']"
+        ],
+        "price": "Read price text in the same result card as the matching product link; confirm the relevant seller/offer on the product page.",
+        "availability": "Do not infer merchant stock from a Torob price alone; prefer an explicit seller offer state or verify the linked shop."
+      },
+      "extraction_notes": [
+        "Always search Torob first.",
+        "Open the matching Torob product page and inspect the individual seller offers.",
+        "Treat each distinct seller/price combination as a separate comparison offer.",
+        "If there is no verified merchant URL, link to the exact Torob product page and name Torob as the source.",
+        "Aggregator prices can be stale or lead to a different variant; verify the seller page when accessible."
+      ]
     },
     {
       "id": "digikala",
       "name": "دیجی‌کالا",
-      "url": "https://www.digikala.com",
-      "search_pattern": "https://www.digikala.com/search/?q={query}",
+      "base_url": "https://www.digikala.com",
+      "search_url_template": "https://www.digikala.com/search/?q={query}",
       "type": "marketplace",
-      "category": "all",
+      "categories": [
+        "general",
+        "electronics",
+        "mobile",
+        "laptop",
+        "home",
+        "gaming"
+      ],
       "enabled": true,
       "priority": 2,
-      "features": ["fast_shipping", "reviews", "installments", "official_warranty"]
+      "selector_hints": {
+        "product_links": [
+          "a[href*='/product/']",
+          "a[href*='dkp-']"
+        ],
+        "price": "Read the current price on the product page for the exact selected variant; inspect visible price labels and Product/Offer JSON-LD.",
+        "availability": "Inspect visible stock messaging and the active purchase control for the exact selected variant."
+      },
+      "extraction_notes": [
+        "Product paths and client-rendered attributes may change; use hrefs found in the current DOM.",
+        "Confirm storage, color, model, seller, warranty, and condition before accepting an offer.",
+        "Do not treat a generic add-to-cart button elsewhere on the page as evidence for this product."
+      ]
     },
     {
-      "id": "bashgah",
+      "id": "basalam",
       "name": "باسلام",
-      "url": "https://www.bashgah.com",
-      "search_pattern": "https://www.bashgah.com/search?q={query}",
-      "type": "social_marketplace",
-      "category": "all",
+      "base_url": "https://basalam.com",
+      "search_url_template": "https://basalam.com/search?q={query}",
+      "type": "marketplace",
+      "categories": [
+        "general",
+        "home",
+        "fashion",
+        "handmade",
+        "food",
+        "crafts"
+      ],
       "enabled": true,
       "priority": 3,
-      "features": ["free_shipping", "local_sellers", "handmade"]
+      "selector_hints": {
+        "product_links": [
+          "a[href*='/product/']",
+          "a[href*='/p/']"
+        ],
+        "price": "Read the price next to the matching product title in the rendered card or product page.",
+        "availability": "Use an explicit stock message or active purchase control belonging to the exact offer."
+      },
+      "extraction_notes": [
+        "Correct domain is basalam.com; do not use bashgah.com.",
+        "If the saved search URL no longer works, use the site's visible search field and record the resulting product URL.",
+        "Record the seller/booth name only if it is visible on the page.",
+        "Do not infer shipping cost, delivery time, or free shipping."
+      ]
     },
     {
       "id": "emalls",
       "name": "ایمالز",
-      "url": "https://www.emalls.ir",
-      "search_pattern": "https://www.emalls.ir/search?q={query}",
+      "base_url": "https://emalls.ir",
+      "search_url_template": null,
       "type": "aggregator",
-      "category": "all",
+      "categories": [
+        "general",
+        "electronics",
+        "mobile",
+        "laptop",
+        "home",
+        "gaming"
+      ],
       "enabled": true,
       "priority": 4,
-      "features": ["price_comparison"]
+      "selector_hints": {
+        "product_links": [
+          "Inspect anchors inside the matching rendered result card; no fixed path is assumed."
+        ],
+        "price": "Associate each displayed price with its product variant and, if shown, seller/offer.",
+        "availability": "Verify on the merchant's product page if eMalls does not explicitly expose stock."
+      },
+      "extraction_notes": [
+        "Open the home page and use the visible search form rather than guessing a query parameter.",
+        "Follow a merchant offer when available and accessible.",
+        "When only the aggregator offer is verifiable, link to that specific eMalls page and label it clearly.",
+        "Do not assume an offer is in stock merely because a price is listed."
+      ]
     },
     {
       "id": "elecmake",
       "name": "الکترومیک",
-      "url": "https://elecmake.ir",
-      "search_pattern": "https://elecmake.ir/search?q={query}",
+      "base_url": "https://elecmake.ir",
+      "search_url_template": "https://elecmake.ir/?s={query}",
       "type": "specialty",
-      "category": "electronics",
+      "categories": [
+        "electronics",
+        "components",
+        "diy"
+      ],
       "enabled": true,
       "priority": 5,
-      "features": ["components", "modules", "diy"]
+      "selector_hints": {
+        "product_links": [
+          "a.woocommerce-LoopProduct-link",
+          "li.product a",
+          "a[href*='/product/']"
+        ],
+        "price": [
+          "span.price",
+          "p.price",
+          ".price"
+        ],
+        "availability": [
+          ".stock",
+          "p.stock",
+          "[class*='stock']"
+        ]
+      },
+      "extraction_notes": [
+        "These are WooCommerce-style candidates only; confirm they exist before using them.",
+        "If the search route fails, use the website's visible search form.",
+        "On the product page, inspect Product/Offer JSON-LD and visible stock text."
+      ]
     },
     {
       "id": "arvidtech",
       "name": "آرویدتک",
-      "url": "https://arvidtech.com",
-      "search_pattern": "https://arvidtech.com/?s={query}",
+      "base_url": "https://arvidtech.com",
+      "search_url_template": "https://arvidtech.com/?s={query}",
       "type": "specialty",
-      "category": "electronics",
+      "categories": [
+        "electronics",
+        "microcontrollers",
+        "sensors",
+        "components"
+      ],
       "enabled": true,
       "priority": 6,
-      "features": ["components", "microcontrollers", "sensors"]
+      "selector_hints": {
+        "product_links": [
+          "a.woocommerce-LoopProduct-link",
+          "li.product a",
+          "a[href*='/product/']"
+        ],
+        "price": [
+          "span.price",
+          "p.price",
+          ".price"
+        ],
+        "availability": [
+          ".stock",
+          "p.stock",
+          "[class*='stock']"
+        ]
+      },
+      "extraction_notes": [
+        "Check the current DOM first; WooCommerce-like selectors are fallback hints, not verified selectors.",
+        "Use only listed price values for the same model/variant and verify currency from the page."
+      ]
     },
     {
       "id": "micromike",
       "name": "میکرومیک",
-      "url": "https://micromike.ir",
-      "search_pattern": "https://micromike.ir/?s={query}",
+      "base_url": "https://micromike.ir",
+      "search_url_template": "https://micromike.ir/?s={query}",
       "type": "specialty",
-      "category": "electronics",
+      "categories": [
+        "electronics",
+        "modules",
+        "development_boards",
+        "components"
+      ],
       "enabled": true,
       "priority": 7,
-      "features": ["components", "modules", "development_boards"]
+      "selector_hints": {
+        "product_links": [
+          "a.woocommerce-LoopProduct-link",
+          "li.product a",
+          "a[href*='/product/']"
+        ],
+        "price": [
+          "span.price",
+          "p.price",
+          ".price"
+        ],
+        "availability": [
+          ".stock",
+          "p.stock",
+          "[class*='stock']"
+        ]
+      },
+      "extraction_notes": [
+        "Check whether the current site uses WooCommerce before using the candidate selectors.",
+        "Find the product-specific price and stock status in the same card or detail page.",
+        "If the product page gives no stock evidence, use unknown."
+      ]
     },
     {
       "id": "caferobot",
       "name": "کافه ربات",
-      "url": "https://caferobot.com",
-      "search_pattern": "https://caferobot.com/?s={query}",
+      "base_url": "https://caferobot.com",
+      "search_url_template": "https://caferobot.com/?s={query}",
       "type": "specialty",
-      "category": "robotics",
+      "categories": [
+        "robotics",
+        "electronics",
+        "education",
+        "kits"
+      ],
       "enabled": true,
       "priority": 8,
-      "features": ["robotics", "education", "kits"]
-    },
-    {
-      "id": "utmel",
-      "name": "اتمل",
-      "url": "https://utmel.com",
-      "search_pattern": "https://utmel.com/search?q={query}",
-      "type": "specialty",
-      "category": "electronics",
-      "enabled": true,
-      "priority": 9,
-      "features": ["components", "semiconductors"]
+      "selector_hints": {
+        "product_links": [
+          "a.woocommerce-LoopProduct-link",
+          "li.product a",
+          "a[href*='/product/']"
+        ],
+        "price": [
+          "span.price",
+          "p.price",
+          ".price"
+        ],
+        "availability": [
+          ".stock",
+          "p.stock",
+          "[class*='stock']"
+        ]
+      },
+      "extraction_notes": [
+        "Use for robotics components, kits, education boards, and related products.",
+        "Candidate selectors are not guarantees; verify them on the live DOM.",
+        "Confirm that kit contents and quantities match before comparing prices."
+      ]
     }
   ],
-  "categories": {
-    "all": "همه",
-    "electronics": "الکترونیک",
-    "robotics": "رباتیک",
-    "fashion": "پوشاک",
-    "home": "لوازم خانگی",
-    "mobile": "موبایل",
-    "laptop": "لپ‌تاپ",
-    "gaming": "گیمینگ"
+  "output_policy": {
+    "max_rows": 10,
+    "currency": "Toman",
+    "thousands_separator": "٬",
+    "sort": "verified in-stock offers first, then ascending normalized Toman price",
+    "exclude_from_summary": [
+      "out_of_stock",
+      "unknown currency",
+      "unknown price",
+      "different product variants"
+    ],
+    "required_columns": [
+      "#",
+      "محصول و مدل دقیق",
+      "قیمت (تومان)",
+      "فروشگاه / فروشنده",
+      "موجودی",
+      "لینک مستقیم"
+    ]
   },
-  "settings": {
-    "default_sort": "price_asc",
-    "default_currency": "IRR",
-    "show_unavailable": false,
-    "max_results_per_shop": 10,
-    "enable_images": true,
-    "enable_cache": true,
-    "cache_ttl": 3600
+  "unsupported_features": {
+    "status": "not_implemented",
+    "features": [
+      "price history and charts",
+      "background price tracking and alerts",
+      "coupon validation",
+      "review sentiment analysis",
+      "persistent shopping lists",
+      "CSV/JSON export",
+      "delivery-time estimation",
+      "installment comparison",
+      "in-store maps"
+    ],
+    "note": "Do not promise these features unless an independent, working tool implements them."
   }
 }
