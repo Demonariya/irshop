@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "purpose": "Search entry points and extraction guidance for the irshop agent. URL templates and selector hints are starting points, not a guarantee that a site currently exposes that route or markup.",
   "query_rules": {
     "encoding": "Percent-encode the complete query value as UTF-8 before substituting {query}. If the template fails, use the visible search form on the site's home page.",
@@ -14,7 +14,8 @@
       "card_association": "Find the product anchor first. Extract the price and stock text from the same card/container, not from a nearby promotional banner or unrelated product.",
       "price": "Prefer current selling price. Ignore crossed-out prices, installments, deposits, delivery charges, and conditional coupon totals.",
       "stock": "Only mark in_stock or out_of_stock when explicit page evidence exists. Otherwise use unknown.",
-      "selectors_warning": "Do not treat any selector hint as verified or stable. Inspect the live DOM on every site visit and prefer semantic attributes and structured data."
+      "selectors_warning": "Do not treat any selector hint as verified or stable. Inspect the live DOM on every site visit and prefer semantic attributes and structured data.",
+      "enamad": "On the store homepage/footer, find a clickable Enamad badge. Follow it to the official trustseal.enamad.ir or enamad.ir page. Confirm the exact registered hostname and a current non-expired validity indication; store the evidence URL and check date. Do not infer status from the logo or reputation."
     }
   },
   "shops": [
@@ -46,8 +47,22 @@
         "Open the matching Torob product page and inspect the individual seller offers.",
         "Treat each distinct seller/price combination as a separate comparison offer.",
         "If there is no verified merchant URL, link to the exact Torob product page and name Torob as the source.",
-        "Aggregator prices can be stale or lead to a different variant; verify the seller page when accessible."
-      ]
+        "Aggregator prices can be stale or lead to a different variant; verify the seller page when accessible.",
+        "Check the underlying merchant's Enamad separately for every seller offer; the aggregator's own status does not verify merchant sellers."
+      ],
+      "enamad": {
+        "status": "badge_seen_official_check_unavailable",
+        "badge_link_seen": true,
+        "verification_attempted": true,
+        "badge_url": "https://trustseal.enamad.ir/?id=138365&Code=2OsRoKxZQ7hUgxPQJnPc",
+        "verification_url": "https://trustseal.enamad.ir/?id=138365&Code=2OsRoKxZQ7hUgxPQJnPc",
+        "official_page_reachable": false,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": "2026-10-10",
+        "evidence": "Clickable trustseal.enamad.ir badge link found on the live About page. The official verification URL failed with ERR_TUNNEL_CONNECTION_FAILED; this is the aggregator's badge, not a verification of its merchant offers."
+      }
     },
     {
       "id": "digikala",
@@ -77,7 +92,20 @@
         "Product paths and client-rendered attributes may change; use hrefs found in the current DOM.",
         "Confirm storage, color, model, seller, warranty, and condition before accepting an offer.",
         "Do not treat a generic add-to-cart button elsewhere on the page as evidence for this product."
-      ]
+      ],
+      "enamad": {
+        "status": "badge_seen_official_check_unavailable",
+        "badge_link_seen": true,
+        "verification_attempted": true,
+        "badge_url": "https://trustseal.enamad.ir/?id=19077&Code=sScdOJOzhFxtcEqkjP7P",
+        "verification_url": "https://trustseal.enamad.ir/?id=19077&Code=sScdOJOzhFxtcEqkjP7P",
+        "official_page_reachable": false,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": "2026-10-10",
+        "evidence": "Clickable trustseal.enamad.ir badge link found in the live site footer. The official verification URL failed with ERR_TUNNEL_CONNECTION_FAILED in the research browser; registered domain and validity could not be confirmed."
+      }
     },
     {
       "id": "basalam",
@@ -108,7 +136,20 @@
         "If the saved search URL no longer works, use the site's visible search field and record the resulting product URL.",
         "Record the seller/booth name only if it is visible on the page.",
         "Do not infer shipping cost, delivery time, or free shipping."
-      ]
+      ],
+      "enamad": {
+        "status": "badge_seen_official_check_unavailable",
+        "badge_link_seen": true,
+        "verification_attempted": true,
+        "badge_url": "https://trustseal.enamad.ir/?id=116503&Code=6iQN5yCbmti3PrU4cINp",
+        "verification_url": "https://trustseal.enamad.ir/?id=116503&Code=6iQN5yCbmti3PrU4cINp",
+        "official_page_reachable": false,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": "2026-10-10",
+        "evidence": "Clickable trustseal.enamad.ir badge link found on the live site. The official verification URL failed with ERR_TUNNEL_CONNECTION_FAILED; registered domain and validity could not be confirmed."
+      }
     },
     {
       "id": "emalls",
@@ -137,8 +178,22 @@
         "Open the home page and use the visible search form rather than guessing a query parameter.",
         "Follow a merchant offer when available and accessible.",
         "When only the aggregator offer is verifiable, link to that specific eMalls page and label it clearly.",
-        "Do not assume an offer is in stock merely because a price is listed."
-      ]
+        "Do not assume an offer is in stock merely because a price is listed.",
+        "Check the underlying merchant's Enamad separately for every seller offer; the aggregator's own status does not verify merchant sellers."
+      ],
+      "enamad": {
+        "status": "badge_seen_official_check_unavailable",
+        "badge_link_seen": true,
+        "verification_attempted": true,
+        "badge_url": "https://trustseal.enamad.ir/?id=112220&code=zQqUD6yF4tu7jtM3VLXN",
+        "verification_url": "https://trustseal.enamad.ir/?id=112220&code=zQqUD6yF4tu7jtM3VLXN",
+        "official_page_reachable": false,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": "2026-10-10",
+        "evidence": "Clickable trustseal.enamad.ir badge link found in the live site footer. The official verification URL failed with ERR_TUNNEL_CONNECTION_FAILED; this is the aggregator's badge, not a verification of its merchant offers."
+      }
     },
     {
       "id": "elecmake",
@@ -174,7 +229,20 @@
         "These are WooCommerce-style candidates only; confirm they exist before using them.",
         "If the search route fails, use the website's visible search form.",
         "On the product page, inspect Product/Offer JSON-LD and visible stock text."
-      ]
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
     },
     {
       "id": "arvidtech",
@@ -210,7 +278,20 @@
       "extraction_notes": [
         "Check the current DOM first; WooCommerce-like selectors are fallback hints, not verified selectors.",
         "Use only listed price values for the same model/variant and verify currency from the page."
-      ]
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
     },
     {
       "id": "micromike",
@@ -247,7 +328,20 @@
         "Check whether the current site uses WooCommerce before using the candidate selectors.",
         "Find the product-specific price and stock status in the same card or detail page.",
         "If the product page gives no stock evidence, use unknown."
-      ]
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
     },
     {
       "id": "caferobot",
@@ -284,7 +378,1765 @@
         "Use for robotics components, kits, education boards, and related products.",
         "Candidate selectors are not guarantees; verify them on the live DOM.",
         "Confirm that kit contents and quantities match before comparing prices."
-      ]
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "technolife",
+      "name": "تکنولایف",
+      "base_url": "https://www.technolife.com",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "general",
+        "electronics",
+        "mobile",
+        "laptop",
+        "home",
+        "gaming"
+      ],
+      "enabled": true,
+      "priority": 9,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Live retail store for electronics and general goods.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "badge_seen_official_check_unavailable",
+        "badge_link_seen": true,
+        "verification_attempted": true,
+        "badge_url": "https://trustseal.enamad.ir/?id=503658&Code=goySWpXTDssfX3WtKAISFyRvVbDU4LK2",
+        "verification_url": "https://trustseal.enamad.ir/?id=503658&Code=goySWpXTDssfX3WtKAISFyRvVbDU4LK2",
+        "official_page_reachable": false,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": "2026-10-10",
+        "evidence": "Clickable trustseal.enamad.ir badge link found in the live site footer. The official verification URL failed with ERR_TUNNEL_CONNECTION_FAILED in the research browser; registered domain and validity could not be confirmed."
+      }
+    },
+    {
+      "id": "kalatik",
+      "name": "کالاتیک",
+      "base_url": "https://kalatik.com",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "mobile",
+        "electronics",
+        "wearables"
+      ],
+      "enabled": true,
+      "priority": 10,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Electronics retailer. A live footer badge link was found; official validity was unavailable in this check.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "badge_seen_official_check_unavailable",
+        "badge_link_seen": true,
+        "verification_attempted": true,
+        "badge_url": "https://trustseal.enamad.ir/?id=650848&Code=L2nLwqNRWZDZuNtRHeT7eBraantEfTMY",
+        "verification_url": "https://trustseal.enamad.ir/?id=650848&Code=L2nLwqNRWZDZuNtRHeT7eBraantEfTMY",
+        "official_page_reachable": false,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": "2026-10-10",
+        "evidence": "Clickable trustseal.enamad.ir badge link found in the live site footer. The official verification URL failed with ERR_TUNNEL_CONNECTION_FAILED; registered domain and validity could not be confirmed."
+      }
+    },
+    {
+      "id": "19kala",
+      "name": "۱۹کالا",
+      "base_url": "https://www.19kala.com",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "mobile",
+        "electronics",
+        "wearables"
+      ],
+      "enabled": true,
+      "priority": 11,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Mobile/electronics retailer. Check exact storage, warranty, seller, and variant.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "mobit",
+      "name": "موبیت",
+      "base_url": "https://mobit.ir",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "mobile",
+        "electronics",
+        "wearables"
+      ],
+      "enabled": true,
+      "priority": 12,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Mobile and electronics retail; use current page search UI.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "meghdadit",
+      "name": "مقداد آی‌تی",
+      "base_url": "https://meghdadit.com",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "computers",
+        "laptop",
+        "components",
+        "network",
+        "mobile"
+      ],
+      "enabled": true,
+      "priority": 13,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Computer, laptop, component, and network equipment retailer.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "lioncomputer",
+      "name": "لیون کامپیوتر",
+      "base_url": "https://lioncomputer.com",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "computers",
+        "laptop",
+        "components",
+        "gaming"
+      ],
+      "enabled": true,
+      "priority": 14,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "PC parts and gaming hardware retailer.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "janebi",
+      "name": "جانبی",
+      "base_url": "https://janebi.com",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "mobile_accessories",
+        "electronics",
+        "audio"
+      ],
+      "enabled": true,
+      "priority": 15,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Mobile accessories and consumer electronics.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "technosun",
+      "name": "تکنوسان",
+      "base_url": "https://technosun.ir",
+      "search_url_template": null,
+      "type": "retailer",
+      "categories": [
+        "electronics",
+        "mobile_accessories",
+        "home"
+      ],
+      "enabled": true,
+      "priority": 16,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Consumer electronics and accessories. Verify the product-level page.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "eca",
+      "name": "فروشگاه ECA",
+      "base_url": "https://eshop.eca.ir",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "electronics",
+        "components",
+        "robotics",
+        "tools"
+      ],
+      "enabled": true,
+      "priority": 17,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Electronics components, modules, tools, robotics, and learning kits.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "daneshjookit",
+      "name": "دانشجو کیت",
+      "base_url": "https://daneshjookit.com",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "electronics",
+        "robotics",
+        "development_boards",
+        "education"
+      ],
+      "enabled": true,
+      "priority": 18,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Electronic components, embedded systems, robotics, and educational kits.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "digistyle",
+      "name": "دیجی‌استایل",
+      "base_url": "https://www.digistyle.com",
+      "search_url_template": null,
+      "type": "fashion_retailer",
+      "categories": [
+        "fashion",
+        "shoes",
+        "bags",
+        "beauty"
+      ],
+      "enabled": true,
+      "priority": 19,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Fashion and lifestyle retailer; verify size, color, and model.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "modiseh",
+      "name": "مدیسه",
+      "base_url": "https://www.modiseh.com",
+      "search_url_template": null,
+      "type": "marketplace",
+      "categories": [
+        "fashion",
+        "beauty",
+        "home",
+        "electronics"
+      ],
+      "enabled": true,
+      "priority": 20,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "General lifestyle marketplace including apparel, beauty, home, and digital goods.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "banimode",
+      "name": "بانی‌مد",
+      "base_url": "https://www.banimode.com",
+      "search_url_template": null,
+      "type": "fashion_retailer",
+      "categories": [
+        "fashion",
+        "shoes",
+        "bags",
+        "beauty"
+      ],
+      "enabled": true,
+      "priority": 21,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Fashion and apparel retailer; compare the exact size and color.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "shixon",
+      "name": "شیکسون",
+      "base_url": "https://shixon.com",
+      "search_url_template": null,
+      "type": "fashion_retailer",
+      "categories": [
+        "fashion",
+        "shoes",
+        "bags"
+      ],
+      "enabled": true,
+      "priority": 22,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Fashion and apparel retailer; use the current search UI.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "webpoosh",
+      "name": "وب‌پوش",
+      "base_url": "https://webpoosh.com",
+      "search_url_template": null,
+      "type": "fashion_retailer",
+      "categories": [
+        "fashion",
+        "apparel"
+      ],
+      "enabled": true,
+      "priority": 23,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Apparel retail. Include only if an active product/checkout page is reachable.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "sarabara",
+      "name": "سارابارا",
+      "base_url": "https://sarabara.com",
+      "search_url_template": null,
+      "type": "fashion_retailer",
+      "categories": [
+        "fashion",
+        "apparel"
+      ],
+      "enabled": true,
+      "priority": 24,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Apparel retailer; confirm the current domain and live product listings before use.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "tagmond",
+      "name": "تگ‌موند",
+      "base_url": "https://tagmond.com",
+      "search_url_template": null,
+      "type": "fashion_retailer",
+      "categories": [
+        "fashion",
+        "outlet",
+        "apparel"
+      ],
+      "enabled": true,
+      "priority": 25,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Fashion retail; verify product condition and size/variant.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "khanoumi",
+      "name": "خانومی",
+      "base_url": "https://www.khanoumi.com",
+      "search_url_template": null,
+      "type": "beauty_retailer",
+      "categories": [
+        "beauty",
+        "personal_care"
+      ],
+      "enabled": true,
+      "priority": 26,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Beauty and personal-care retailer; compare exact brand, size, and package.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "mootanroo",
+      "name": "موتن‌رو",
+      "base_url": "https://mootanroo.com",
+      "search_url_template": null,
+      "type": "beauty_retailer",
+      "categories": [
+        "beauty",
+        "personal_care",
+        "fragrance"
+      ],
+      "enabled": true,
+      "priority": 27,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Beauty, personal-care, and fragrance retail.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "rooja",
+      "name": "روژا",
+      "base_url": "https://rooja.com",
+      "search_url_template": null,
+      "type": "beauty_retailer",
+      "categories": [
+        "beauty",
+        "fragrance",
+        "personal_care"
+      ],
+      "enabled": true,
+      "priority": 28,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Beauty and fragrance retail; verify exact product size and seller.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "alanzashop",
+      "name": "الانزا",
+      "base_url": "https://alanzashop.com",
+      "search_url_template": null,
+      "type": "beauty_retailer",
+      "categories": [
+        "beauty",
+        "personal_care",
+        "fragrance"
+      ],
+      "enabled": true,
+      "priority": 29,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Beauty and personal-care retail.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "taaghche",
+      "name": "طاقچه",
+      "base_url": "https://taaghche.com",
+      "search_url_template": null,
+      "type": "digital_content",
+      "categories": [
+        "ebooks",
+        "audiobooks"
+      ],
+      "enabled": true,
+      "priority": 30,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Digital books and audiobooks; prices may be for a digital license, not a physical item.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "fidibo",
+      "name": "فیدیبو",
+      "base_url": "https://fidibo.com",
+      "search_url_template": null,
+      "type": "digital_content",
+      "categories": [
+        "ebooks",
+        "audiobooks"
+      ],
+      "enabled": true,
+      "priority": 31,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Digital books, audiobooks, and subscriptions; compare license/access terms, not just price.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "ketabrah",
+      "name": "کتابراه",
+      "base_url": "https://ketabrah.com",
+      "search_url_template": null,
+      "type": "digital_content",
+      "categories": [
+        "ebooks",
+        "audiobooks"
+      ],
+      "enabled": true,
+      "priority": 32,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Digital books and audiobooks; check whether a title is digital or physical.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "iranketab",
+      "name": "ایران کتاب",
+      "base_url": "https://www.iranketab.ir",
+      "search_url_template": null,
+      "type": "book_retailer",
+      "categories": [
+        "books",
+        "stationery"
+      ],
+      "enabled": true,
+      "priority": 33,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Physical book retail. Compare edition, publisher, language, and shipping separately.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "ketabonline",
+      "name": "کتاب آنلاین",
+      "base_url": "https://ketabonline.ir",
+      "search_url_template": null,
+      "type": "book_retailer",
+      "categories": [
+        "books"
+      ],
+      "enabled": true,
+      "priority": 34,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Book retailer. Use the visible on-site search and match edition/ISBN.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "ajansbook",
+      "name": "آژانس‌بوک",
+      "base_url": "https://ajansbook.ir",
+      "search_url_template": null,
+      "type": "book_retailer",
+      "categories": [
+        "books",
+        "stationery"
+      ],
+      "enabled": true,
+      "priority": 35,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Online book store; verify edition, publisher, and available format.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "okala",
+      "name": "اُکالا",
+      "base_url": "https://okala.com",
+      "search_url_template": null,
+      "type": "grocery_retailer",
+      "categories": [
+        "grocery",
+        "home_essentials"
+      ],
+      "enabled": true,
+      "priority": 36,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Online grocery. Total price can be location/store specific; do not assume a universal delivery fee.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "snappmarket",
+      "name": "اسنپ مارکت",
+      "base_url": "https://snapp.market",
+      "search_url_template": null,
+      "type": "grocery_marketplace",
+      "categories": [
+        "grocery",
+        "home_essentials"
+      ],
+      "enabled": true,
+      "priority": 37,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Online grocery marketplace; prices and stock can depend on the selected city/store.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "limapetstore",
+      "name": "لیما پت‌شاپ",
+      "base_url": "https://limapetstore.com",
+      "search_url_template": null,
+      "type": "pet_retailer",
+      "categories": [
+        "pet_supplies",
+        "pet_food"
+      ],
+      "enabled": true,
+      "priority": 38,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Pet products; match weight, flavor, age range, and package size.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "abzaarmart",
+      "name": "ابزارمارت",
+      "base_url": "https://abzaarmart.ir",
+      "search_url_template": null,
+      "type": "tools_retailer",
+      "categories": [
+        "tools",
+        "industrial",
+        "hardware"
+      ],
+      "enabled": true,
+      "priority": 39,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Tools, industrial equipment, and hardware; compare exact SKU and specifications.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "abzarma",
+      "name": "ابزارما",
+      "base_url": "https://abzarma.com",
+      "search_url_template": null,
+      "type": "tools_retailer",
+      "categories": [
+        "tools",
+        "industrial",
+        "safety"
+      ],
+      "enabled": true,
+      "priority": 40,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Tools, safety, and industrial hardware; verify product SKU and seller details.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "offdecor",
+      "name": "آف دکور",
+      "base_url": "https://www.offdecor.com",
+      "search_url_template": null,
+      "type": "home_retailer",
+      "categories": [
+        "furniture",
+        "home",
+        "decor"
+      ],
+      "enabled": true,
+      "priority": 41,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Furniture and home decor; shipping and configuration often materially affect the final cost.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "homeek",
+      "name": "هومیک",
+      "base_url": "https://www.homeek.ir",
+      "search_url_template": null,
+      "type": "home_retailer",
+      "categories": [
+        "home",
+        "kitchen",
+        "appliances"
+      ],
+      "enabled": true,
+      "priority": 42,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Kitchen equipment and home appliances; compare dimensions and model number.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "goldserver",
+      "name": "گلدسرور",
+      "base_url": "https://goldserver.ir",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "servers",
+        "network",
+        "datacenter"
+      ],
+      "enabled": true,
+      "priority": 43,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Servers and network equipment; compare exact part number, refurbished/new state, and warranty.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "akharmarket",
+      "name": "آخر مارکت",
+      "base_url": "https://www.akharmarket.com",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "network",
+        "servers",
+        "security",
+        "datacenter"
+      ],
+      "enabled": true,
+      "priority": 44,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Networking and datacenter equipment; prefer part-number searches.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "fidardigital",
+      "name": "فیدار تکنولوژی",
+      "base_url": "https://fidardigital.com",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "storage",
+        "network",
+        "surveillance",
+        "computer_accessories"
+      ],
+      "enabled": true,
+      "priority": 45,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Storage, network, surveillance, and computer equipment.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "netnety",
+      "name": "نت‌گستر / نت‌نتی",
+      "base_url": "https://shop.netnety.net",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "network",
+        "servers",
+        "computer"
+      ],
+      "enabled": true,
+      "priority": 46,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Network, server, and computer equipment. Distinguish new, used, and refurbished offers.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "tabinahayat",
+      "name": "تابی‌نهایت",
+      "base_url": "https://tabinahayat.com",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "network",
+        "telecom",
+        "computer"
+      ],
+      "enabled": true,
+      "priority": 47,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Network, telecom, and computer equipment.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "nitamarket",
+      "name": "نیتا شبکه",
+      "base_url": "https://nitamarket.com",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "network",
+        "voip",
+        "servers"
+      ],
+      "enabled": true,
+      "priority": 48,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Network, VoIP, telephony, and server equipment.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "digisports",
+      "name": "دیجی اسپرت",
+      "base_url": "https://digisports.ir",
+      "search_url_template": null,
+      "type": "sports_retailer",
+      "categories": [
+        "sports",
+        "fitness",
+        "travel"
+      ],
+      "enabled": true,
+      "priority": 49,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Sports equipment and fitness items; compare exact model and dimensions.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "zarifa",
+      "name": "ظریفا",
+      "base_url": "https://www.zarifa.ir",
+      "search_url_template": null,
+      "type": "craft_retailer",
+      "categories": [
+        "handmade",
+        "crafts",
+        "home_decor"
+      ],
+      "enabled": true,
+      "priority": 50,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Handicrafts and decor; variant/handmade differences may make offers non-comparable.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "khameneibook",
+      "name": "فروشگاه انتشارات انقلاب اسلامی",
+      "base_url": "https://shop.khameneibook.ir",
+      "search_url_template": null,
+      "type": "book_retailer",
+      "categories": [
+        "books"
+      ],
+      "enabled": true,
+      "priority": 51,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Book retail. Verify edition, publisher, and format.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "ketabkhane",
+      "name": "خانه کتاب",
+      "base_url": "https://khane-ketab.ir",
+      "search_url_template": null,
+      "type": "book_retailer",
+      "categories": [
+        "books"
+      ],
+      "enabled": true,
+      "priority": 52,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Book store; match ISBN and edition.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "zennonet",
+      "name": "زینونت",
+      "base_url": "https://zennonet.ir",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "network",
+        "security",
+        "surveillance"
+      ],
+      "enabled": true,
+      "priority": 53,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Network, security, and surveillance equipment; confirm domain and active product listings before use.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
+    },
+    {
+      "id": "vcenter",
+      "name": "فروشگاه VCenter",
+      "base_url": "https://shop.vcenter.ir",
+      "search_url_template": null,
+      "type": "specialty",
+      "categories": [
+        "servers",
+        "network",
+        "datacenter",
+        "storage"
+      ],
+      "enabled": true,
+      "priority": 54,
+      "selector_hints": {
+        "product_links": "Use links attached to the matching product title in the live DOM; no stable site-specific selector has been verified in this research pass.",
+        "price": "Read the price from the same rendered product card or detail page as the matching product title and variant.",
+        "availability": "Require explicit stock text or an active purchase action for the exact offer; otherwise use unknown."
+      },
+      "extraction_notes": [
+        "Datacenter, server, and network equipment; search by exact part number.",
+        "No search URL template is assumed; use the visible search box if the site route is not known.",
+        "Inspect Product/Offer JSON-LD and live DOM. Treat any selector found online as a hint, not a guarantee.",
+        "Enamad status must be checked from a clickable badge and its official verification page; a logo alone is not proof."
+      ],
+      "enamad": {
+        "status": "not_checked",
+        "badge_link_seen": null,
+        "verification_attempted": false,
+        "badge_url": null,
+        "verification_url": null,
+        "official_page_reachable": null,
+        "registered_domain": null,
+        "expiry": null,
+        "officially_verified": false,
+        "checked_at": null,
+        "evidence": "Not checked yet. Absence of a recorded badge is not evidence that the store has no Enamad."
+      }
     }
   ],
   "output_policy": {
@@ -304,8 +2156,21 @@
       "قیمت (تومان)",
       "فروشگاه / فروشنده",
       "موجودی",
+      "وضعیت اینماد",
       "لینک مستقیم"
-    ]
+    ],
+    "enamad_status_labels": {
+      "active_verified": "تأیید رسمی",
+      "expired_verified": "منقضی",
+      "domain_mismatch": "عدم تطبیق دامنه",
+      "badge_seen_official_check_unavailable": "لینک اینماد دیده شد؛ اعتبار نامشخص",
+      "badge_link_not_found_in_fetched_html": "نشان در صفحه قابل مشاهده نبود",
+      "site_unreachable": "سایت در دسترس نبود",
+      "robots_disallow": "دسترسی طبق robots.txt محدود است",
+      "official_page_domain_match_needs_manual_validity_check": "دامنه تطبیق دارد؛ اعتبار بررسی نهایی می‌خواهد",
+      "official_page_domain_unknown": "تطبیق دامنه نامشخص",
+      "not_checked": "بررسی‌نشده"
+    }
   },
   "unsupported_features": {
     "status": "not_implemented",
@@ -320,6 +2185,46 @@
       "installment comparison",
       "in-store maps"
     ],
-    "note": "Do not promise these features unless an independent, working tool implements them."
+    "note": "Do not promise these features unless an independent, working tool implements them. Enamad status in the registry is timestamped; not_checked is not the same as no badge, and aggregator status is not seller status."
+  },
+  "last_researched_at": "2026-10-10",
+  "enamad_policy": {
+    "status_values": [
+      "active_verified",
+      "expired_verified",
+      "domain_mismatch",
+      "badge_seen_official_check_unavailable",
+      "badge_link_not_found_in_fetched_html",
+      "site_unreachable",
+      "robots_disallow",
+      "official_page_domain_match_needs_manual_validity_check",
+      "official_page_domain_unknown",
+      "not_checked"
+    ],
+    "verified_definition": "Use active_verified only after the official trustseal.enamad.ir or enamad.ir page is reachable, the exact registered domain matches the store domain, and the current validity status/expiry is explicitly confirmed. A badge image/link alone is never active_verified.",
+    "batch_check_date": "2026-10-10",
+    "batch_result": {
+      "domains_inspected_in_live_browser": [
+        "www.digikala.com",
+        "www.technolife.com",
+        "torob.com",
+        "emalls.ir",
+        "basalam.com",
+        "kalatik.com"
+      ],
+      "official_badge_links_seen": 6,
+      "official_verification_pages_reachable": 0,
+      "active_verified": 0,
+      "note": "For all six sites, clickable trustseal.enamad.ir links were found, but the official verification pages failed with ERR_TUNNEL_CONNECTION_FAILED in the research browser. No domain-match, expiry, or active-validity claims are made. The other registry entries have not yet been checked."
+    },
+    "manual_method": [
+      "Open the store's actual homepage and click its Enamad badge.",
+      "The destination must remain on trustseal.enamad.ir or enamad.ir.",
+      "Read the domain displayed on the official page and compare it with the exact hostname you are checking.",
+      "Read the current validity/expiry status on that official page.",
+      "If the official verification page is unreachable or omits a necessary field, use badge_seen_official_check_unavailable or official_page_domain_unknown; never assume it is active.",
+      "For Torob and eMalls, also verify the individual seller's own domain when comparing an external merchant offer."
+    ],
+    "limitations": "The research browser could observe badges and extract official links for the first six domains, but the official verification host was unreachable through its network tunnel. Hence no store in this batch is labelled officially active/valid."
   }
 }
