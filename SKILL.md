@@ -149,7 +149,7 @@ Return no more than **10 distinct offers**, sorted by normalized Toman price asc
 Use exactly these columns, in this order:
 
 | # | تصویر | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
-|---:|---|---:|---|---|---|---|---|---|
+|---:|---|---|---:|---|---|---|---|
 
 Formatting rules:
 
@@ -200,7 +200,7 @@ The summary should be short. If there is only one valid offer, report the cheape
 ## مقایسه قیمت: کیبورد مکانیکی مدل دقیق K
 
 | # | تصویر | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
-|---:|---|---:|---|---|---|---|---|
+|---:|---|---|---:|---|---|---|---|
 | 1 | ![تصویر محصول](https://example.com/product-image.jpg) | نام و مدل دقیق | ۹۶٬۵۰۰٬۰۰۰ تومان | فروشنده‌ای که در صفحه دیده شد | موجود | بررسی‌نشده | [مشاهده محصول](https://example.com/product) |
 
 ### خلاصه
