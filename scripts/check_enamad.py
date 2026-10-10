@@ -132,7 +132,7 @@ def robots_allows(url: str, timeout: float) -> bool | None:
     except HTTPError as exc:
         if exc.code in (404, 410):
             return True
-        return False if exc.code in (401, 403) else None
+        return None
     except (URLError, TimeoutError, OSError):
         return None
     parser = RobotFileParser()
