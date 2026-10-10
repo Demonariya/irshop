@@ -15,7 +15,8 @@
       "price": "Prefer current selling price. Ignore crossed-out prices, installments, deposits, delivery charges, and conditional coupon totals.",
       "stock": "Only mark in_stock or out_of_stock when explicit page evidence exists. Otherwise use unknown.",
       "selectors_warning": "Do not treat any selector hint as verified or stable. Inspect the live DOM on every site visit and prefer semantic attributes and structured data.",
-      "enamad": "On the store homepage/footer, find a clickable Enamad badge. Follow it to the official trustseal.enamad.ir or enamad.ir page. Confirm the exact registered hostname and a current non-expired validity indication; store the evidence URL and check date. Do not infer status from the logo or reputation."
+      "enamad": "On the store homepage/footer, find a clickable Enamad badge. Follow it to the official trustseal.enamad.ir or enamad.ir page. Confirm the exact registered hostname and a current non-expired validity indication; store the evidence URL and check date. Do not infer status from the logo or reputation.",
+      "product_image": "Prefer the main image visibly associated with the exact product card/detail and selected variant. Fallback to Product JSON-LD image, then og:image only when validated as the product image. Resolve relative URLs against the page URL; accept only absolute HTTP(S) image URLs, reject placeholders/logos/banners/avatars/tracking pixels and mismatched variants. Do not guess an image; use the output policy fallback when unverified."
     }
   },
   "shops": [
@@ -2206,6 +2207,7 @@
     ],
     "required_columns": [
       "#",
+      "تصویر",
       "محصول و مدل دقیق",
       "قیمت (تومان)",
       "فروشگاه / فروشنده",
@@ -2227,6 +2229,30 @@
       "robots_unavailable": "فایل robots.txt قابل بررسی نبود",
       "site_http_error": "خطای HTTP در سایت",
       "official_redirect_outside_domain": "هدایت خارج از دامنه رسمی"
+    },
+    "image_policy": {
+      "placement": "immediately after #",
+      "display": "Markdown image syntax ![تصویر محصول](image_url) when the image URL is usable and tied to the exact offer",
+      "fallback": "بدون تصویر",
+      "allowed_schemes": [
+        "https",
+        "http"
+      ],
+      "preferred_sources": [
+        "rendered main product image for the exact offer",
+        "Product JSON-LD image validated against the live page",
+        "og:image only when clearly a product image"
+      ],
+      "reject": [
+        "logos",
+        "site banners",
+        "avatars",
+        "tracking pixels",
+        "placeholders or broken-image URLs",
+        "images for other products or variants"
+      ],
+      "renderer_fallback": "If remote Markdown images are not rendered by the agent UI, show a clickable [تصویر محصول](image_url) link rather than inventing or rehosting the image.",
+      "note": "Product images may change or be blocked. Only use observed source URLs; if no suitable image can be verified, show the fallback."
     }
   },
   "unsupported_features": {
