@@ -1,9 +1,9 @@
 ---
 name: irshop
-description: "Search and compare current product prices on Iranian shopping sites, and check the seller's Enamad trust badge. Use for Persian or English product searches requiring verified variants, Toman prices, stock status, seller links, cautious Enamad verification, deduplication, and a ranked Markdown comparison table."
+description: "Search and compare current product prices on Iranian shopping sites, show product image thumbnails when available, and check the seller's Enamad trust badge. Use for Persian or English product searches requiring verified variants, Toman prices, stock status, seller links, cautious Enamad verification, deduplication, and a ranked Markdown comparison table."
 license: MIT
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   author: "Demonariya"
   tags: "shopping, iran, price-comparison, persian, ecommerce"
 ---
@@ -54,6 +54,7 @@ For each candidate, collect the fields below before adding it to the comparison:
 - seller: named seller/store when shown; otherwise the shop or aggregator name.
 - shop: the website where the offer was found.
 - url: the canonical product/offer URL actually opened or found in the page.
+- image_url: a usable direct HTTP(S) URL for the main image of this exact product/variant, or null if no suitable image can be identified.
 - evidence: brief note describing the visible price/stock evidence when a field is uncertain.
 - checked_at: current date/time only if the runtime exposes it reliably.
 
@@ -72,6 +73,26 @@ Use this extraction order:
 - **Basalam:** use the current search UI if the saved query pattern fails. Extract the product title, displayed price, seller/booth name, and product URL from the same card/page. Do not infer free shipping or stock from the shop name or an unrelated badge.
 - **eMalls:** treat the result as an aggregator. Identify whether a price belongs to a specific shop, then follow the offer to the merchant when possible. Keep a result labeled as eMalls if no direct merchant offer can be verified.
 - **Specialist shops:** first inspect the page for JSON-LD Product/Offer. Some shops may use WooCommerce-like markup (li.product, a.woocommerce-LoopProduct-link, .price, .stock), but only use these hints after confirming they exist on that site's live DOM. Find the title, price, availability, and link within the same product card; verify candidates on their detail page.
+
+### Extract a product image
+
+For each offer, collect `image_url` only when it can be tied to the matching product and preferably the selected variant. This is optional evidence; never invent an image URL to fill the table.
+
+Use this source priority:
+
+1. The main product image currently rendered on the exact product page or matching result card. Prefer the browser's resolved/current image URL (such as `currentSrc`) over a lazy-loading placeholder.
+2. The `image` field of Product JSON-LD, after checking that it corresponds to the same product and does not contradict the visible page.
+3. The page's `og:image` metadata only when it is clearly the product image, not a site-wide banner.
+4. Lazy-load attributes such as `data-src` or an appropriate entry from `srcset`, but only after resolving it against the page URL and confirming it is not a placeholder.
+
+Image handling rules:
+
+- Accept only a real absolute `http://` or `https://` URL. Resolve relative URLs against the actual page URL when the browser/runtime supports it. Do not use `data:`, `blob:`, JavaScript URLs, broken-image fallbacks, tracking pixels, store logos, avatars, category banners, or a different product's image.
+- Prefer the primary product image with enough detail to identify the item. Keep variants separate; do not attach a different color/capacity/model image merely because the title is similar.
+- Do not assume a URL is a valid image just because it appears in metadata. Prefer a source visibly rendered as the product image or one confirmed by the page's product metadata; if it cannot be validated, use no image.
+- Do not download, rehost, or modify product images as part of this Skill. Use the source image URL and respect the shop's access rules.
+- The table renderer may not display remote Markdown images in every agent UI. If remote images are stripped or unsupported, render a clickable `[تصویر محصول](image_url)` link instead and keep the product-page link in its own column.
+- If no suitable image is found, write `بدون تصویر`; do not insert an unrelated, guessed, or decorative image.
 
 ### Enamad verification for seller offers
 
@@ -127,8 +148,8 @@ Return no more than **10 distinct offers**, sorted by normalized Toman price asc
 
 Use exactly these columns, in this order:
 
-| # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
-|---:|---|---:|---|---|---|---|---|
+| # | تصویر | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
+|---:|---|---:|---|---|---|---|---|---|
 
 Formatting rules:
 
@@ -137,7 +158,7 @@ Formatting rules:
 - Use stock labels موجود, ناموجود, and نامشخص. Use the distinct Enamad labels from the verification section; do not map بررسی‌نشده to a claim that the shop lacks Enamad. The main table should normally omit ناموجود offers.
 - Use a real Markdown link such as [مشاهده محصول](https://...). Never output a placeholder such as [link] or link a shop home page as though it were a product page.
 - Link to the merchant's product page when verified. Otherwise link to the exact aggregator listing and make the source clear in the seller/source cell.
-- Do not add image columns unless a real product image URL was successfully extracted and images materially help the request.
+- Always include the «تصویر» column immediately after «#». Show `![تصویر محصول](image_url)` only for a usable image URL extracted from the matching offer; otherwise show «بدون تصویر». If the runtime does not render Markdown images, use a clickable image URL instead.
 
 ### 8. Add a short summary under the table
 
@@ -178,9 +199,9 @@ The summary should be short. If there is only one valid offer, report the cheape
 ~~~markdown
 ## مقایسه قیمت: کیبورد مکانیکی مدل دقیق K
 
-| # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
-|---:|---|---:|---|---|---|---|
-| 1 | نام و مدل دقیق | ۹۶٬۵۰۰٬۰۰۰ تومان | فروشنده‌ای که در صفحه دیده شد | موجود | بررسی‌نشده | [مشاهده محصول](https://example.com/product) |
+| # | تصویر | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | وضعیت اینماد | لینک مستقیم |
+|---:|---|---:|---|---|---|---|---|
+| 1 | ![تصویر محصول](https://example.com/product-image.jpg) | نام و مدل دقیق | ۹۶٬۵۰۰٬۰۰۰ تومان | فروشنده‌ای که در صفحه دیده شد | موجود | بررسی‌نشده | [مشاهده محصول](https://example.com/product) |
 
 ### خلاصه
 - نتایج قابل مقایسه: ۱ پیشنهاد از منابعی که واقعاً بررسی شدند.
