@@ -1,11 +1,11 @@
 {
   "name": "irshop",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "جستجو و مقایسه قیمت محصولات در فروشگاه‌های اینترنتی ایران",
   "main": "SKILL.md",
   "scripts": {
     "test": "python -m unittest discover -s scripts -p \"test_*.py\"",
-    "lint": "python -m py_compile scripts/parse_price.py scripts/test_parse_price.py"
+    "lint": "python -m py_compile scripts/parse_price.py scripts/test_parse_price.py scripts/check_enamad.py scripts/test_check_enamad.py"
   },
   "repository": {
     "type": "git",
