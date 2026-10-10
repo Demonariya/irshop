@@ -1,181 +1,186 @@
 ---
 name: irshop
-description: جستجوی محصول در فروشگاه‌های اینترنتی ایران. هر محصولی (الکترونیک، پوشاک، لوازم خانگی و...) را در دیجی‌کالا، ترب، باسلام، و سایر سایت‌ها مقایسه کن.
-version: 1.0.0
-author: demonariya
-tags:
-  - shopping
-  - iran
-  - price-comparison
-  - digikala
-  - torob
-  - ecommerce
+description: "Search and compare current product prices on Iranian shopping sites. Use for Persian or English product searches that need verified product names, variant details, Toman prices, availability, seller names, direct links, deduplication, and a ranked Markdown comparison table."
+license: MIT
+metadata:
+  version: "1.1.0"
+  author: "Demonariya"
+  tags: "shopping, iran, price-comparison, persian, ecommerce"
 ---
 
-# irshop 🇮🇷
+# irshop — Iranian Product Search and Price Comparison
 
-جستجو و مقایسه محصولات در فروشگاه‌های اینترنتی ایران.
+Search Iranian stores for a requested product, verify live offers, normalize prices, remove duplicate listings, and return a useful comparison. The implemented scope is **live search and price comparison**; this skill does not persist state or run scheduled jobs.
 
-## Quick Start
+## Use When
 
-```
-/irshop Samsung Galaxy A56
-```
+- The user asks to find a product or compare current prices from Iranian online shops.
+- The user supplies a model, SKU, product name, budget, or key specifications to match.
+- The user wants a concise price table with seller links and stock status.
 
-## Features
+## Don't Use When
 
-- 🔍 جستجو در چندین فروشگاه
-- 💰 مقایسه قیمت
-- 📊 نمودار قیمت
-- ⭐ تحلیل نظرات
-- 🏷️ کدهای تخفیف
-- 🚚 بررسی ارسال
-- 📱 پشتیبانی از فارسی و انگلیسی
+- The user asks for historical price charts, scheduled alerts, persistent shopping lists, coupon validation, review sentiment analysis, delivery estimates, or CSV exports. These are not implemented. Explain the limitation and offer the live search/comparison workflow instead.
+- The task is only general product advice and does not require current offers.
+- The product is prohibited by applicable safety rules or the user asks to evade a shop's access controls.
 
-## Commands
+## Workflow
 
-| دستور | توضیح |
-|-------|-------|
-| `{product}` | جستجوی محصول |
-| `{product} مقایسه` | مقایسه مدل‌ها |
-| `{product} تخفیف` | کدهای تخفیف |
-| `{product} پیگیری` | هشدار قیمت |
-| `{product} جایگزین` | محصولات مشابه |
-| `{product} نظرات` | تحلیل نظرات |
-| `{product} اقساط` | شرایط اقساط |
-| `{product} گارانتی` | مقایسه گارانتی |
-| `{product} زمان تحویل` | زمان ارسال |
-| `{product} نمودار` | روند قیمت |
-| `{product} لیست خرید` | اضافه به لیست |
-| `لیست خرید` | نمایش لیست |
-| `صادرات` | خروجی CSV/JSON |
+### 1. Parse the request and select tools
 
-## Supported Shops
+1. Identify the exact product and any required variant: model number, capacity, color, region, warranty, pack size, or other attributes that materially change price.
+2. If a critical model detail is ambiguous, search using the supplied wording and keep variants separate; do not stop for clarification unless comparison would otherwise be misleading.
+3. Inspect the tools actually available in the current agent runtime. Prefer its browser automation tool to inspect rendered pages. Depending on the runtime, navigation may be exposed as open_page or browser_tab, and rendered page inspection may be exposed as a DOM snapshot, accessibility tree, locator, or page-evaluation action. Use only tools that are actually available; never invent a tool name.
+4. If browser automation is unavailable, use the available web-search and open-page tools. Search snippets may discover candidates, but do not treat a snippet alone as proof of current price or stock when the product page can be opened.
+5. Read **references/shops.json** before choosing sites. Start with Torob, then use general shops and relevant specialist shops. Search at most five sites per request unless the user asks for broader coverage.
 
-### فروشگاه‌های اصلی
-- [torob.com](https://torob.com) — مقایسه‌کننده قیمت
-- [digikala.com](https://digikala.com) — بزرگ‌ترین فروشگاه
-- [bashgah.com](https://bashgah.com) — باسلام
-- [emalls.ir](https://emalls.ir) — مقایسه قیمت
+### 2. Search, starting with Torob
 
-### فروشگاه‌های تخصصی
-- [elecmake.ir](https://elecmake.ir) — قطعات الکترونیک
-- [arvidtech.com](https://arvidtech.com) — آرویدتک
-- [micromike.ir](https://micromike.ir) — میکرومیک
-- [caferobot.com](https://caferobot.com) — رباتیک
-- [utmel.com](https://utmel.com) — قطعات الکترونیک
+1. Search Torob first using the encoded query in its search_url_template. Search in Persian first for Persian-market products; add an English/model-number query when that is likely to uncover more exact matches.
+2. Inspect result cards and follow promising product links. Torob is an aggregator: when a product detail page exposes individual seller offers, treat each seller/price pair as a separate offer. Prefer the seller's direct product URL when the page explicitly provides one. Otherwise link to the Torob product/offer page and identify the source as Torob; do not label it as a direct shop link.
+3. Search the most relevant of Digikala, Basalam, and eMalls next. Use specialist shops only when their category matches the product. If a saved search URL fails, open that site's home page and use its visible search form instead of guessing new query parameters.
+4. Inspect the first useful result pages, then open the actual product or offer pages for candidates likely to enter the final comparison. Collect a small set of credible offers rather than many weak matches.
+5. Keep the exact model/variant in the candidate record. Exclude products that merely share a brand or a broad keyword.
 
-## Installation
+### 3. Extract each candidate from the live page
 
-### Claude Code (Recommended)
+For each candidate, collect the fields below before adding it to the comparison:
 
-```bash
-# از مارکت رسمی
-/plugin marketplace add demonariya/irshop
-/plugin install irshop@irshop-marketplace
+- product_name: visible product title, cleaned of irrelevant page chrome.
+- variant: exact model/configuration details shown by the seller.
+- price_raw: the visible current selling price and nearby currency/unit text.
+- price_toman: normalized numeric Toman value, or null if it cannot be established.
+- availability: in_stock, out_of_stock, or unknown.
+- seller: named seller/store when shown; otherwise the shop or aggregator name.
+- shop: the website where the offer was found.
+- url: the canonical product/offer URL actually opened or found in the page.
+- evidence: brief note describing the visible price/stock evidence when a field is uncertain.
+- checked_at: current date/time only if the runtime exposes it reliably.
 
-# یا نصب مستقیم
-npx skills add demonariya/irshop
-```
+Use this extraction order:
 
-### Manual Installation
+1. Inspect visible, rendered product details and accessible labels. Confirm the title, selected variant, price, and stock state from the same offer.
+2. Inspect HTML script elements of type application/ld+json for Product, Offer, or AggregateOffer when present. Useful fields include name, sku, offers.price, priceCurrency, availability, seller, and url. Validate structured data against the visible page; stale or contradictory JSON-LD must not override the current rendered offer.
+3. If structured data is absent, use the product card or product page DOM. Locate a product link first, then extract price and stock text from that same card or page. Do not grab the first price on the page, because it may belong to a promotion banner, a related product, shipping, an installment, or an old crossed-out price.
+4. Prefer a seller's direct product link. Accept only valid HTTP or HTTPS URLs that lead to the relevant product or offer. Remove tracking parameters only when doing so preserves the working product URL.
+5. Treat selector hints in references/shops.json as starting points, not guarantees. Inspect the current DOM before using them. Prefer semantic attributes, structured data, and links adjacent to the matching product title over positional selectors such as div:nth-child(4).
 
-```bash
-git clone https://github.com/demonariya/irshop.git ~/.claude/skills/irshop
-```
+#### Site-specific extraction
 
-## Configuration
+- **Torob:** identify the matching product result; open it and inspect its seller-offer list. Record each distinct seller and price separately when available. A Torob listing is not proof that the external seller currently has stock; verify an external seller page when accessible. If only Torob is accessible, keep the Torob URL and mark stock unknown unless explicit stock evidence exists.
+- **Digikala:** open the product URL and verify the currently selected variant. Product links often include /product/ or a dkp- identifier, but paths and rendered attributes can change. Read the current selling price and the page's stock/purchase state; do not use a price for a different capacity, color, seller, or configuration.
+- **Basalam:** use the current search UI if the saved query pattern fails. Extract the product title, displayed price, seller/booth name, and product URL from the same card/page. Do not infer free shipping or stock from the shop name or an unrelated badge.
+- **eMalls:** treat the result as an aggregator. Identify whether a price belongs to a specific shop, then follow the offer to the merchant when possible. Keep a result labeled as eMalls if no direct merchant offer can be verified.
+- **Specialist shops:** first inspect the page for JSON-LD Product/Offer. Some shops may use WooCommerce-like markup (li.product, a.woocommerce-LoopProduct-link, .price, .stock), but only use these hints after confirming they exist on that site's live DOM. Find the title, price, availability, and link within the same product card; verify candidates on their detail page.
 
-### فروشگاه‌های پیش‌فرض
+### 4. Normalize prices and availability
 
-فروشگاه‌ها در فایل `references/shops.json` قابل تنظیم هستند.
+1. Preserve the original price text until parsing is complete. Convert Persian digits (۰۱۲۳۴۵۶۷۸۹) and Arabic-Indic digits (٠١٢٣٤٥٦٧٨٩) to Western digits for calculation.
+2. Treat Persian/Arabic thousands separators (٬, ٫, ،), commas, and clearly grouped spaces carefully. Example: ۹۶٬۵۰۰٬۰۰۰ تومان becomes 96500000 Toman, displayed as ۹۶٬۵۰۰٬۰۰۰ تومان.
+3. If the source explicitly says **ریال / IRR**, convert to Toman by dividing the amount by 10. If it explicitly says **تومان / تومن / Toman**, do not convert it. Interpret explicit units such as میلیون or هزار as multipliers. Never infer a unit solely from the size of the number.
+4. Use the bundled helper when Python is available. Pass the visible price label as the argument to scripts/parse_price.py. The script uses only the Python standard library. If Python is unavailable, apply the same normalization rules manually. Use the helper's assume-toman option only when the page's price unit is clear from surrounding page text or a site-wide label, not merely because the shop is Iranian.
+5. Use the current selling price, not the struck-through list price, monthly installment, deposit, shipping charge, cashback, or coupon price that requires an unverified condition. Explain conditional discounts separately only when the condition is explicit.
+6. Detect out-of-stock signals such as ناموجود, اتمام موجودی, موجود نیست, فعلاً موجود نیست, sold out, out of stock, or unavailable. An explicit out-of-stock signal takes precedence over generic text such as “buy” elsewhere on the page.
+7. Set stock to in_stock only when the page explicitly indicates availability or an active purchase action clearly belongs to that exact offer. Set out_of_stock for explicit unavailability. Otherwise use unknown; never turn missing evidence into “موجود”.
+8. If price or unit remains ambiguous, set the numeric comparable price to null and explain why. Do not rank or average that offer as though it had a verified Toman price.
 
-### هشدار قیمت
+### 5. Deduplicate and validate offers
 
-برای فعال‌سازی هشدار قیمت، فایل `~/.claude/irshop/config.json` را بسازید:
+1. Normalize each URL: remove fragments, remove only known tracking parameters, and normalize an optional trailing slash without breaking query-based product IDs.
+2. Remove duplicate captures of the same shop, same product/variant, and same URL. If URL identity is unavailable, compare normalized title, variant, seller, and price.
+3. Keep offers from different sellers separate even when they sell the same product; that is the point of price comparison.
+4. Never merge materially different variants, used/refurbished items with new items, bundles with single items, or products with different warranty/region information. If condition is unclear, mark it in the product cell or exclude it from the main comparison.
+5. Before ranking, confirm that each remaining row is the requested product and that its price is numeric and in Toman.
 
-```json
-{
-  "alerts": {
-    "enabled": true,
-    "check_interval": "daily",
-    "notification": "console"
-  }
-}
-```
+### 6. Handle errors and access restrictions
+
+1. If a search URL fails, try the shop's home page and visible search form once. If the site uses client-side rendering, wait for the page to finish rendering and inspect the live DOM.
+2. If a page times out, retry once with a reasonable timeout. If the site returns a 403, 429, CAPTCHA, explicit bot challenge, or access-denied page, stop retrying that site and use other public sources. Do not bypass the challenge, rotate proxies to evade controls, automate login, or claim to have inspected blocked data.
+3. If a shop is unreachable, state that it could not be checked. Keep working with accessible sites and mention partial coverage.
+4. If search results are empty, try one useful spelling/model-number variant, then stop. Do not manufacture results to fill the table.
+5. If no offer can be verified, say so directly and list which sources failed or had no matching product.
+
+### 7. Build the comparison table
+
+Return no more than **10 distinct offers**, sorted by normalized Toman price ascending. Put confirmed in-stock offers first. Unknown-stock offers may appear after them with نامشخص; exclude explicit out-of-stock offers from the main table and from all price summaries.
+
+Use exactly these columns, in this order:
+
+| # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | لینک مستقیم |
+|---:|---|---:|---|---|---|
+
+Formatting rules:
+
+- Format full prices with Persian digits and the Persian thousands separator, for example ۹۶٬۵۰۰٬۰۰۰ تومان. Do not use shortened forms such as ۹۶.۵M.
+- If price is not reliably comparable, display نامشخص rather than inventing or estimating it.
+- Use status labels موجود, ناموجود, and نامشخص. The main comparison table should normally omit ناموجود offers; mention excluded out-of-stock matches in the note below if useful.
+- Use a real Markdown link such as [مشاهده محصول](https://...). Never output a placeholder such as [link] or link a shop home page as though it were a product page.
+- Link to the merchant's product page when verified. Otherwise link to the exact aggregator listing and make the source clear in the seller/source cell.
+- Do not add image columns unless a real product image URL was successfully extracted and images materially help the request.
+
+### 8. Add a short summary under the table
+
+After the table, add a **خلاصه** section with:
+
+- **نتایج قابل مقایسه:** number of unique offers shown, and number of sites successfully checked when known.
+- **ارزان‌ترین گزینه:** seller, price, and direct link; only if at least one comparable in-stock offer exists.
+- **میانگین قیمت:** calculate only from verified, in-stock offers for the same exact variant with comparable Toman prices. Do not mix capacities, models, bundles, conditions, or ambiguous currencies.
+- **بازه قیمت:** lowest to highest comparable in-stock price when at least two exist.
+- **محدودیت‌ها:** briefly state blocked/unreachable sites, unknown stock, excluded variants, or omitted shipping/conditional discounts.
+- **زمان بررسی:** include the real check time only when available from the runtime; never invent a timestamp.
+
+The summary should be short. If there is only one valid offer, report the cheapest offer and omit the average/range instead of implying statistical significance. Do not estimate shipping or final checkout cost unless a verified source provides it.
+
+## Rules
+
+- Use live evidence, not invented prices, sellers, stock states, review counts, coupons, or delivery dates.
+- Treat current rendered content as primary evidence and structured data as a cross-check.
+- Search Torob first; use other shops to extend coverage or verify merchant-level availability.
+- Use references/shops.json for site-specific entry points and extraction hints, but validate the live site every time.
+- Keep products and variants separate. Compare only prices expressed in the same currency/unit.
+- Show the source link for every row and disclose partial coverage.
+- Respect rate limits, robots directives, terms of service, login walls, CAPTCHA, and anti-bot restrictions. Never try to circumvent access controls.
+- Do not claim persistent functionality. This skill does not save a watchlist, monitor prices in the background, send alerts, generate historical charts, validate coupons, analyze reviews, estimate delivery, or export CSV unless a separate working tool explicitly performs that action.
 
 ## Examples
 
-### جستجوی ساده
-```
-/irshop کیبورد مکانیکی
-```
+### User request
 
-### مقایسه
-```
-/irshop iPhone 16 vs Galaxy S25 مقایسه
-```
+~~~text
+/irshop کیبورد مکانیکی مدل دقیق K
+~~~
 
-### پیگیری قیمت
-```
-/irshop PlayStation 5 پیگیری قیمت هدف 25 میلیون
-```
+### Output format
 
-### لیست خرید
-```
-/irshop لیست خرید
-/irshop Galaxy A56 افزودن به لیست 1
-```
+~~~markdown
+## مقایسه قیمت: کیبورد مکانیکی مدل دقیق K
 
-## How It Works
+| # | محصول و مدل دقیق | قیمت (تومان) | فروشگاه / فروشنده | موجودی | لینک مستقیم |
+|---:|---|---:|---|---|---|
+| 1 | نام و مدل دقیق | ۹۶٬۵۰۰٬۰۰۰ تومان | فروشنده‌ای که در صفحه دیده شد | موجود | [مشاهده محصول](https://example.com/product) |
 
-1. **جستجو**: ابتدا از `torob.com` شروع می‌کند (پوشش چندصد فروشگاه)
-2. **تکمیل**: سپس فروشگاه‌های تخصصی را جستجو می‌کند
-3. **فیلتر**: نتایج تکراری و ناموجود حذف می‌شوند
-4. **مرتب‌سازی**: بر اساس قیمت (ارزان‌ترین اول)
-5. **نمایش**: جدول با عکس، قیمت، و لینک مستقیم
+### خلاصه
+- نتایج قابل مقایسه: ۱ پیشنهاد از منابعی که واقعاً بررسی شدند.
+- ارزان‌ترین گزینه: فروشنده و قیمت نمایش‌داده‌شده در جدول.
+- محدودیت‌ها: هزینه ارسال بررسی نشده است.
+~~~
 
-## Privacy & Security
+The row above is a formatting example only, not a real offer. Never reuse its product, price, seller, or URL as search data.
 
-- 🔒 هیچ اطلاعات شخصی ذخیره نمی‌شود
-- 🚫 API Key نیاز ندارد (فقط وب‌اسکرپینگ)
-- 🛡️ فقط سایت‌های معتبر فهرست شده‌اند
-- ⚠️ مسئولیت خرید با کاربر است
+## Edge Cases
 
-## Contributing
+- **No visible price:** show نامشخص; do not substitute a crossed-out price, a price from a similar SKU, or a search snippet without verification.
+- **Price says “تماس بگیرید” or “استعلام قیمت”:** do not include it in numeric ranking or averages.
+- **Price shown only in Rial:** convert only when the Rial label is explicit; mention the conversion if it materially affects the result.
+- **Variant selection:** verify the chosen variant on the product page. If the variant cannot be selected or confirmed, mark the offer as uncertain or exclude it.
+- **Contradictory stock indicators:** explicit sold-out text wins; if the exact offer's state cannot be resolved, use نامشخص.
+- **Only one accessible shop:** provide the verified result and say that cross-shop coverage was limited.
+- **All matches unavailable:** state that no in-stock comparable offer was verified; do not present an unavailable item as the cheapest purchase.
+- **Unexpected page structure:** inspect semantic links, visible text, and JSON-LD; do not assume selectors from a different store work here.
 
-به استقبال کمک‌های شما هستیم!
+## References
 
-1. Fork کنید
-2. Branch بسازید (`git checkout -b feature/amazing`)
-3. Commit کنید (`git commit -m 'Add amazing feature'`)
-4. Push کنید (`git push origin feature/amazing`)
-5. Pull Request بزنید
-
-### اضافه کردن فروشگاه جدید
-
-فایل `references/shops.json` را ویرایش کنید:
-
-```json
-{
-  "name": "فروشگاه جدید",
-  "url": "https://example.com",
-  "search_pattern": "https://example.com/search?q={query}",
-  "category": "general",
-  "enabled": true
-}
-```
-
-## License
-
-MIT License — استفاده آزاد
-
-## Support
-
-- 🐛 [Issues](https://github.com/demonariya/irshop/issues)
-- 💬 [Discussions](https://github.com/demonariya/irshop/discussions)
-- 📧 Email: [your-email]
-
----
-
-**ساخته شده با ❤️ برای خریداران ایرانی**
+- **references/shops.json** — search entry points, shop types, selector hints, and extraction notes.
+- **scripts/parse_price.py** — standard-library helper for Persian/Arabic numeral, currency, and stock-text normalization.
+- **examples/basic-usage.md** — sample request and output structure; examples are not live market data.
+- Agent Skills format: https://agentskills.io/specification
