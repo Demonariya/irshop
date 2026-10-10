@@ -1,11 +1,11 @@
 {
   "name": "irshop",
-  "version": "1.0.0",
-  "description": "جستجو و مقایسه محصولات در فروشگاه‌های اینترنتی ایران",
+  "version": "1.1.0",
+  "description": "جستجو و مقایسه قیمت محصولات در فروشگاه‌های اینترنتی ایران",
   "main": "SKILL.md",
   "scripts": {
-    "test": "echo \"No tests yet\"",
-    "lint": "echo \"No linting configured\""
+    "test": "python -m unittest discover -s scripts -p \"test_*.py\"",
+    "lint": "python -m py_compile scripts/parse_price.py scripts/test_parse_price.py"
   },
   "repository": {
     "type": "git",
@@ -13,15 +13,14 @@
   },
   "keywords": [
     "claude-code",
-    "skill",
+    "agent-skill",
     "shopping",
     "iran",
     "price-comparison",
+    "persian",
     "digikala",
     "torob",
-    "ecommerce",
-    "retail",
-    "api"
+    "ecommerce"
   ],
   "author": "demonariya",
   "license": "MIT",
@@ -37,11 +36,7 @@
     "README.md",
     "LICENSE",
     "references/",
-    "examples/"
-  ],
-  "categories": [
-    "AI",
-    "Shopping",
-    "Utilities"
+    "examples/",
+    "scripts/"
   ]
 }
